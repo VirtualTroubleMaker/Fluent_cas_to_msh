@@ -12,8 +12,8 @@ using std::vector;
 
 int main()
 {
-	string filename("256_256_Cartesian_Periodic_BCs_Sqaure");
-	ifstream infile_cas("./FluentCas/" + filename + "_fluent.cas");
+	string filename("example");
+	ifstream infile_cas("./FluentMesh/" + filename + ".cas");
 	if(!infile_cas)
 		return -99999;
 	string lineS;
@@ -26,25 +26,15 @@ int main()
 		getline(infile_cas,lineS);
 	}
 
-	ofstream outfile_msh("./Zeromsh/" + filename + ".cas");
+	ofstream outfile_msh("./Mesh/" + filename + ".msh");
 	if(!outfile_msh)
 		return -77777;
 	string s("(");
 	for(auto It = vec_s.begin();It != vec_s.end();)
 	{
 		auto s_it = It -> end();
-		auto s_it_B1 = --s_it;
-		auto s_it_B2 = --s_it;
-		if(It->front() != '(' && *s_it_B1 == ')' && *s_it_B2 == ')')
-		{
-			It->pop_back();
-			It->pop_back();
-			outfile_msh << *It;
-			outfile_msh << endl;
-			outfile_msh << "))";
-			++It;
-			continue;
-		}
+		if(It -> back() == ')') It -> pop_back();
+		if(It -> back() == ')') It -> pop_back();
 		outfile_msh << *It;
 		if(s != *(++It))
 			outfile_msh << endl;
